@@ -40,6 +40,6 @@ export const lightbox = new SimpleLightbox('.gallery a', {
 });
 
 export const updateGallery = (galleryRef, images) => {
-  galleryRef.innerHTML = images.map(renderImage).join('');
+  galleryRef.insertAdjacentHTML('beforeend', images.map(renderImage).join(''));
   lightbox.refresh();
 };
