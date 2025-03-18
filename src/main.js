@@ -20,9 +20,11 @@ let cardHeight = 0;
 const showSbmLoader = () => refs.loader.classList.add('loader-submit');
 const hideSbmLoader = () => refs.loader.classList.remove('loader-submit');
 // * More Loader
+const loaderBox = document.createElement('div');
 const loaderElement = document.createElement('span');
+loaderBox.appendChild(loaderElement);
 loaderElement.classList.add('loader');
-refs.gallery.insertAdjacentElement('afterend', loaderElement);
+refs.gallery.insertAdjacentElement('afterend', loaderBox);
 const showMoreLoader = () => loaderElement.classList.add('loader-more');
 const hideMoreLoader = () => loaderElement.classList.remove('loader-more');
 //
