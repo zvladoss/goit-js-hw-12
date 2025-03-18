@@ -66,9 +66,7 @@ body {
 /* #region Loader */
 
 .loader {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  display: none;
   width: 32px;
   height: 32px;
   position: relative;
@@ -93,6 +91,19 @@ body {
   left: auto;
   right: 48px;
   animation-duration: 1.1s;
+}
+
+.loader-submit {
+  margin: 0 auto;
+  transform: translate(-50%, -50%);
+  display: block;
+}
+
+.loader-more {
+  /* bottom: 20px; */
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
 }
 
 @keyframes fill {

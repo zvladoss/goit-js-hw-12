@@ -16,12 +16,22 @@ let currentPage = 1;
 let totalHits = 0;
 let currentQuery = '';
 let cardHeight = 0;
-
-const showLoader = () => refs.loader.classList.add('loader');
-const hideLoader = () => refs.loader.classList.remove('loader');
+// * Loader
+const showSbmLoader = () => refs.loader.classList.add('loader-submit');
+const hideSbmLoader = () => refs.loader.classList.remove('loader-submit');
+// * More Loader
+const loaderElement = document.createElement('span');
+loaderElement.classList.add('loader');
+refs.gallery.insertAdjacentElement('afterend', loaderElement);
+const showMoreLoader = () => loaderElement.classList.add('loader-more');
+const hideMoreLoader = () => loaderElement.classList.remove('loader-more');
+//
 const showMoreBtn = () => refs.loadMoreBtn.classList.add('load-btn-visible');
 const hideMoreBtn = () => refs.loadMoreBtn.classList.remove('load-btn-visible');
-hideLoader();
+//
+hideMoreBtn();
+hideSbmLoader();
+hideMoreLoader();
 
 const smoothScroll = () => {
   const lastCard = refs.gallery.querySelector('.gallery-item:last-child');
@@ -35,8 +45,6 @@ const smoothScroll = () => {
 };
 
 const handleSearchRequest = async () => {
-  showLoader();
-
   try {
     const data = await getPhotos(currentQuery, currentPage);
 
@@ -56,9 +64,11 @@ const handleSearchRequest = async () => {
     }
 
     updateGallery(refs.gallery, data.hits);
-
+    hideMoreLoader();
     totalHits = data.totalHits;
-    toggleLoadMore(totalHits);
+
+    console.log(data.hits);
+    toggleLoadMore(totalHits, data.hits.length);
     if (currentPage > 1) {
       smoothScroll();
     }
@@ -75,13 +85,14 @@ const handleSearchRequest = async () => {
       iconUrl: icon,
     });
   } finally {
-    hideLoader();
+    hideSbmLoader();
   }
 };
 
-const toggleLoadMore = totalHits => {
-  const totalPages = Math.ceil(totalHits / 15);
-  if (currentPage >= totalPages) {
+const toggleLoadMore = (totalHits, hitsLength) => {
+  const perPage = 15;
+  const totalPages = Math.ceil(totalHits / perPage);
+  if (currentPage >= totalPages || hitsLength < perPage) {
     hideMoreBtn();
   } else {
     showMoreBtn();
@@ -96,17 +107,22 @@ const onFormSubmit = event => {
   if (!formValue) {
     return;
   }
-
+  showSbmLoader();
   currentQuery = formValue;
   currentPage = 1;
   refs.gallery.innerHTML = '';
-  handleSearchRequest();
+  setTimeout(() => {
+    handleSearchRequest();
+  }, 500);
 };
 
 const onLoadMoreClick = () => {
   currentPage += 1;
   hideMoreBtn();
-  handleSearchRequest();
+  showMoreLoader();
+  setTimeout(() => {
+    handleSearchRequest();
+  }, 500);
 };
 
 refs.searchForm.addEventListener('submit', onFormSubmit);
