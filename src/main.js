@@ -25,6 +25,7 @@ const loaderElement = document.createElement('span');
 loaderBox.appendChild(loaderElement);
 loaderElement.classList.add('loader');
 refs.gallery.insertAdjacentElement('afterend', loaderBox);
+//
 const showMoreLoader = () => loaderElement.classList.add('loader-more');
 const hideMoreLoader = () => loaderElement.classList.remove('loader-more');
 //
